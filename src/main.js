@@ -5,7 +5,7 @@ const STORAGE_KEY = 'socent-exam-stats-v1';
 /** @type {Q[]} */
 let bank = [];
 
-/** @type {'home'|'quiz'|'summary'} */
+/** @type {'home'|'quiz'|'summary'|'answers'} */
 let phase = 'home';
 
 /** @type {'full'|'mistakes'|'weak'|'sample'} */
@@ -35,6 +35,7 @@ let lastResult = null;
 /** @type {{ q: Q; texts: string[]; correctIndex: number } | null} */
 let currentDisplay = null;
 let keydownAttached = false;
+let answersFilter = '';
 
 function shuffleOrder(length) {
   const arr = Array.from({ length }, (_, i) => i);
@@ -247,6 +248,7 @@ function renderHome() {
         <button class="primary" type="button" id="btn-full" ${loaded ? '' : 'disabled'}>Полный тест</button>
         <button class="secondary" type="button" id="btn-sample" ${loaded ? '' : 'disabled'}>${SAMPLE_SIZE} случайных</button>
         <button class="secondary" type="button" id="btn-weak" ${loaded ? '' : 'disabled'}>Проблемные (${weakCount})</button>
+        <button class="secondary" type="button" id="btn-answers" ${loaded ? '' : 'disabled'}>Все ответы</button>
       </div>
       <fieldset class="home-options">
         <legend>Параметры</legend>
@@ -284,6 +286,11 @@ function renderHome() {
       resetAllStats();
       render();
     }
+  };
+  document.getElementById('btn-answers').onclick = () => {
+    phase = 'answers';
+    answersFilter = '';
+    render();
   };
 }
 
@@ -425,10 +432,76 @@ function renderSummary() {
   };
 }
 
+function renderAnswersScreen() {
+  const root = document.getElementById('app');
+  const query = answersFilter.trim().toLowerCase();
+  const filtered = query
+    ? bank.filter((q) => q.question.toLowerCase().includes(query) || q.variants[0].toLowerCase().includes(query))
+    : bank;
+
+  const items = filtered
+    .map(
+      (q) => `
+      <details class="answer-item">
+        <summary>
+          <span class="num">№${q.id}</span>
+          <span>${escapeHtml(q.question)}</span>
+        </summary>
+        <p class="answer-correct"><strong>Правильный:</strong> ${escapeHtml(q.variants[0])}</p>
+      </details>`
+    )
+    .join('');
+
+  root.innerHTML = `
+    <header class="site-header">
+      <h1>Все вопросы и правильные ответы</h1>
+      <p class="sub">Показано ${filtered.length} из ${bank.length}</p>
+    </header>
+    <div class="card">
+      <label class="search-wrap">
+        <span>Поиск</span>
+        <input id="answers-search" type="text" placeholder="Например: маркетинг, гранты, Шумпетер" value="${escapeHtml(
+          answersFilter
+        )}" />
+      </label>
+      <div class="row-actions">
+        <button type="button" class="secondary" id="btn-expand-all">Раскрыть все</button>
+        <button type="button" class="secondary" id="btn-collapse-all">Свернуть все</button>
+        <button type="button" class="primary" id="btn-answers-home">На главную</button>
+      </div>
+    </div>
+    <div class="answer-list">${items || '<div class="card"><p>Ничего не найдено.</p></div>'}</div>
+  `;
+
+  const search = /** @type {HTMLInputElement} */ (document.getElementById('answers-search'));
+  search.focus();
+  search.addEventListener('input', (evt) => {
+    answersFilter = /** @type {HTMLInputElement} */ (evt.target).value;
+    renderAnswersScreen();
+  });
+
+  document.getElementById('btn-answers-home').onclick = () => {
+    phase = 'home';
+    render();
+  };
+
+  document.getElementById('btn-expand-all').onclick = () => {
+    root.querySelectorAll('details.answer-item').forEach((el) => {
+      el.open = true;
+    });
+  };
+  document.getElementById('btn-collapse-all').onclick = () => {
+    root.querySelectorAll('details.answer-item').forEach((el) => {
+      el.open = false;
+    });
+  };
+}
+
 function render() {
   if (phase === 'home') renderHome();
   else if (phase === 'quiz') renderQuizScreen();
-  else renderSummary();
+  else if (phase === 'summary') renderSummary();
+  else renderAnswersScreen();
 }
 
 async function init() {
