@@ -434,28 +434,10 @@ function renderSummary() {
 
 function renderAnswersScreen() {
   const root = document.getElementById('app');
-  const query = answersFilter.trim().toLowerCase();
-  const filtered = query
-    ? bank.filter((q) => q.question.toLowerCase().includes(query) || q.variants[0].toLowerCase().includes(query))
-    : bank;
-
-  const items = filtered
-    .map(
-      (q) => `
-      <details class="answer-item">
-        <summary>
-          <span class="num">№${q.id}</span>
-          <span>${escapeHtml(q.question)}</span>
-        </summary>
-        <p class="answer-correct"><strong>Правильный:</strong> ${escapeHtml(q.variants[0])}</p>
-      </details>`
-    )
-    .join('');
-
   root.innerHTML = `
     <header class="site-header">
       <h1>Все вопросы и правильные ответы</h1>
-      <p class="sub">Показано ${filtered.length} из ${bank.length}</p>
+      <p class="sub" id="answers-counter"></p>
     </header>
     <div class="card">
       <label class="search-wrap">
@@ -470,14 +452,44 @@ function renderAnswersScreen() {
         <button type="button" class="primary" id="btn-answers-home">На главную</button>
       </div>
     </div>
-    <div class="answer-list">${items || '<div class="card"><p>Ничего не найдено.</p></div>'}</div>
+    <div class="answer-list" id="answers-list"></div>
   `;
 
   const search = /** @type {HTMLInputElement} */ (document.getElementById('answers-search'));
+  const list = document.getElementById('answers-list');
+  const counter = document.getElementById('answers-counter');
+
+  function drawAnswersList() {
+    const query = answersFilter.trim().toLowerCase();
+    const filtered = query
+      ? bank.filter((q) => q.question.toLowerCase().includes(query) || q.variants[0].toLowerCase().includes(query))
+      : bank;
+
+    counter.textContent = `Показано ${filtered.length} из ${bank.length}`;
+
+    const items = filtered
+      .map(
+        (q) => `
+        <details class="answer-item">
+          <summary>
+            <span class="num">№${q.id}</span>
+            <span>${escapeHtml(q.question)}</span>
+          </summary>
+          <p class="answer-correct"><span class="answer-badge">Правильный ответ</span> <span class="answer-value">${escapeHtml(
+            q.variants[0]
+          )}</span></p>
+        </details>`
+      )
+      .join('');
+
+    list.innerHTML = items || '<div class="card"><p>Ничего не найдено.</p></div>';
+  }
+
+  drawAnswersList();
   search.focus();
   search.addEventListener('input', (evt) => {
     answersFilter = /** @type {HTMLInputElement} */ (evt.target).value;
-    renderAnswersScreen();
+    drawAnswersList();
   });
 
   document.getElementById('btn-answers-home').onclick = () => {

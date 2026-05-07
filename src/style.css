@@ -125,8 +125,11 @@ header.site-header p.sub {
 }
 
 .options button.option.is-right {
-  border-color: var(--success);
-  background: color-mix(in srgb, var(--success) 12%, var(--surface));
+  border-color: color-mix(in srgb, var(--success) 70%, #16a34a 30%);
+  border-width: 2px;
+  background: color-mix(in srgb, var(--success) 28%, var(--surface));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--success) 20%, transparent);
+  font-weight: 600;
 }
 
 .feedback {
@@ -142,13 +145,14 @@ header.site-header p.sub {
 }
 
 .feedback.good {
-  border: 1px solid color-mix(in srgb, var(--success) 40%, var(--border));
-  background: color-mix(in srgb, var(--success) 10%, var(--surface));
+  border: 2px solid color-mix(in srgb, var(--success) 55%, var(--border));
+  background: color-mix(in srgb, var(--success) 20%, var(--surface));
 }
 
 .feedback strong {
   display: block;
   margin-bottom: 0.35rem;
+  font-size: 0.98rem;
 }
 
 .row-actions {
@@ -340,6 +344,32 @@ details.answer-item summary .num {
 }
 
 .answer-correct {
-  margin: 0.65rem 0 0.2rem;
-  font-size: 0.92rem;
+  margin: 0.75rem 0 0.2rem;
+  font-size: 0.94rem;
+  line-height: 1.45;
+}
+
+.answer-badge {
+  display: inline-block;
+  margin-right: 0.45rem;
+  margin-bottom: 0.25rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--success) 55%, var(--border));
+  background: color-mix(in srgb, var(--success) 18%, var(--surface));
+  color: color-mix(in srgb, var(--success) 88%, var(--text));
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.answer-value {
+  display: block;
+  margin-top: 0.15rem;
+  padding: 0.5rem 0.62rem;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--success) 45%, var(--border));
+  background: color-mix(in srgb, var(--success) 10%, var(--surface));
+  font-weight: 600;
 }
