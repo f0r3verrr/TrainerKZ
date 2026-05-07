@@ -1,0 +1,292 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f6f8fb;
+  --surface: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --danger: #b91c1c;
+  --success: #15803d;
+  --border: #dbe3ef;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a;
+    --surface: #111827;
+    --text: #f3f4f6;
+    --muted: #9ca3af;
+    --border: #334155;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--accent) 14%, transparent), transparent 40%),
+    radial-gradient(circle at bottom left, color-mix(in srgb, #14b8a6 10%, transparent), transparent 45%),
+    var(--bg);
+  color: var(--text);
+}
+
+#app {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1.8rem 1rem 2.5rem;
+}
+
+header.site-header {
+  margin-bottom: 1.5rem;
+}
+
+header.site-header h1 {
+  font-size: 1.55rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+}
+
+header.site-header p.sub {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+.pill {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--surface) 90%, var(--accent) 10%);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem 1.35rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+}
+
+.card h2 {
+  font-size: 1.05rem;
+  margin: 0 0 0.75rem;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.options button.option {
+  text-align: left;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.options button.option:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+
+.options button.option:disabled {
+  cursor: default;
+  opacity: 0.85;
+}
+
+.options button.option.is-wrong {
+  border-color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+}
+
+.options button.option.is-right {
+  border-color: var(--success);
+  background: color-mix(in srgb, var(--success) 12%, var(--surface));
+}
+
+.feedback {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  font-size: 0.92rem;
+}
+
+.feedback.bad {
+  border: 1px solid color-mix(in srgb, var(--danger) 40%, var(--border));
+  background: color-mix(in srgb, var(--danger) 10%, var(--surface));
+}
+
+.feedback.good {
+  border: 1px solid color-mix(in srgb, var(--success) 40%, var(--border));
+  background: color-mix(in srgb, var(--success) 10%, var(--surface));
+}
+
+.feedback strong {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+button.primary,
+button.secondary {
+  padding: 0.62rem 1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+button.primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+button.primary:hover {
+  background: var(--accent-hover);
+}
+
+button.secondary {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+}
+
+button.secondary:hover {
+  border-color: var(--muted);
+}
+
+fieldset.home-options {
+  border: none;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+
+fieldset.home-options legend {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+label.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+label.check input {
+  margin-top: 0.2rem;
+}
+
+.stats-panel {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.stats-panel strong {
+  color: var(--text);
+}
+
+.progress-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 0.75rem 0;
+}
+
+.progress-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.2s ease;
+}
+
+.question-meta {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.question-text {
+  font-size: 1.04rem;
+  margin: 0 0 1rem;
+}
+
+.score-big {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.25rem 0;
+}
+
+.mistake-list {
+  max-height: 14rem;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  padding-left: 1.1rem;
+  margin: 0.5rem 0 0;
+}
+
+.mistake-list li {
+  margin-bottom: 0.35rem;
+}
+
+details.soft {
+  margin-top: 0.75rem;
+}
+
+details.soft summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+p.hint {
+  margin: 0.45rem 0 0;
+  font-size: 0.83rem;
+  color: var(--muted);
+}
+
+kbd {
+  display: inline-block;
+  min-width: 1.3rem;
+  text-align: center;
+  padding: 0.05rem 0.3rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 84%, var(--accent) 16%);
+  font-size: 0.78rem;
+}

@@ -1,0 +1,17 @@
+{
+  "name": "socent-exam-trainer",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "parse": "node scripts/parse-exam.mjs",
+    "predev": "node scripts/parse-exam.mjs",
+    "dev": "vite",
+    "prebuild": "node scripts/parse-exam.mjs",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^6.0.3"
+  }
+}
